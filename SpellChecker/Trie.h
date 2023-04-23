@@ -1,53 +1,32 @@
 using namespace std;
 
-class Trie;
+#define CHAR_LIMIT 200
 
-class TrieParentNode {
-
-public:
-    TrieParentNode() {}
-    TrieParentNode( char );
-
-private:
-    bool leaf, lastLetter;
-    string letters;
-    TrieParentNode** ptrs;
-    friend class Trie;
-};
-
-class TrieLeafNode {
+class TrieNode {
 
 public:
-    TrieLeafNode() {}
-    TrieLeafNode( string );
+    TrieNode();
+    TrieNode(char);
+    TrieNode& operator=(TrieNode& right);
 
 private:
-    bool leaf;
-    string word;
+    char data;
+    bool is_leaf;
+    TrieNode* children[CHAR_LIMIT];
     friend class Trie;
 };
 
 class Trie {
 
 public:
-    Trie() : notFound( -1 ) {}
-    Trie( string );
-
-    void printTrie() {
-        *prefix = '\0';
-        printTrie( 0, root, prefix );
-    }
-
-    void insert( string );
-    bool wordFound( string );
+    Trie();
+    ~Trie();
+    void insert(wstring);
+    bool check_word(char[]);
+    void print();
 
 private:
-    TrieParentNode* root;
-    const int notFound;
-    char prefix[80];
-
-    int position( TrieParentNode*, char );
-    void addCell( char, TrieParentNode*, int );
-    void createLeaf( char, string, TrieParentNode* );
-    void printTrie( int, TrieParentNode*, string );
+    TrieNode* root;
+    void print_trie(TrieNode* node);
+    void destroy_trie(TrieNode* node);
 };
